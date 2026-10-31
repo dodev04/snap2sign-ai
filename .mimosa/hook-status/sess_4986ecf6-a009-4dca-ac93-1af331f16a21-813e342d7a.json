@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "mimosa-hook-status/v1",
+  "recordedAt": "2026-10-31T04:18:26.563Z",
+  "sessionId": "sess_4986ecf6-a009-4dca-ac93-1af331f16a21",
+  "event": "PostToolUse",
+  "toolName": "Edit",
+  "file": "C:/Users/Admin/.zcode/cli/memories/projects/image-1d9b4a0aab0e9ab6/memory/signboard-ai-editor-project.md",
+  "outcome": "clear",
+  "coverage": "complete",
+  "findingCount": 0,
+  "durationMs": 3,
+  "hostState": "hook_complete",
+  "reportHint": ".mimosa/reports/"
+}
