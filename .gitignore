@@ -1,0 +1,12 @@
+# Pipeline handoff — chỉ commit mẫu; artifact runtime theo task thì không
+.handoff/*
+!.handoff/_templates/
+
+# Trạng thái session của mimosa hook (finding-ledger/history/reports vẫn được commit)
+.mimosa/hook-state/
+
+# Sẵn cho scaffold M1 (Next.js + npm)
+node_modules/
+.next/
+.env
+.env.local

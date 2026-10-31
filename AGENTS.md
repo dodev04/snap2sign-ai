@@ -54,6 +54,14 @@ Chưa có `package.json`. Sau khi scaffold M1: chuẩn Next.js + TypeScript (`np
 - BYOK key của user: localStorage client, gửi header từng request, server dùng xong **bỏ — không lưu DB, không log**.
 - Route `/api/ai/*` chạy Edge Runtime — chỉ `fetch` thuần, không dependency Node-only.
 
+## Pipeline 5 bước (/pipeline) & Lệnh Scaffold (/scaffold)
+
+Mọi việc code chạy qua 5 role tuần tự — **scout → planner → implementer → tester → reviewer** — bàn giao bằng file trong `.handoff/<task-id>/` (`01-scout.md` → `05-review.md`; mẫu tại `.handoff/_templates/`). 
+- Định nghĩa role canonical ZCode: `.zcode/agents/<role>.md` (5 vai: `scout`, `planner`, `implementer`, `tester`, `reviewer`).
+- Lệnh workflow canonical ZCode: `.zcode/commands/` (`pipeline.md` và `scaffold.md`).
+- Trạng thái bền vững của dự án: `docs/00-state/STATE.md` và `docs/00-state/CHECKLIST.md`.
+- Chạy: `/pipeline <yêu cầu>` hoặc `/scaffold M1`. Logic vòng lặp (test FAIL ≤ 2 vòng sửa, review REQUEST_CHANGES ≤ 1 vòng, vượt thì dừng) nằm trong lệnh. Planner và implementer **bắt buộc nạp skill domain** (`signboard-*` trong `.agents/skills/`) trước khi làm. Runtime `.handoff/<task-id>/` đã gitignore — chỉ `_templates/` được commit.
+
 ## Quy ước khác
 
 - Ngôn ngữ sản phẩm: **tiếng Việt** (giữ nguyên dấu thanh; giá `15.000đ`/`15K`; % nguyên số). Font chỉ dùng OFL: Be Vietnam Pro / Montserrat / Anton (token `body`/`display`/`price`).
