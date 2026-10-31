@@ -30,6 +30,12 @@ Cấu trúc `src/` sẽ theo `docs/ARCHITECTURE.md §1` (Next.js App Router; `en
 
 Chưa có `package.json`. Sau khi scaffold M1: chuẩn Next.js + TypeScript (`npm run dev` / `build` / `lint`; test engine bằng vitest). **Cập nhật mục này ngay khi scaffold xong.**
 
+## Kiểm chứng & đồng bộ (bắt buộc mọi phiên làm việc)
+
+1. **Cấm mock dữ liệu test.** Mọi test chạm dữ liệu phải chạy trên luồng thật **client → backend API (`/api/*`) → database (Supabase)** — không stub Supabase, không fake response API, không hardcode dữ liệu giả thay vì query thật. Test tích hợp dùng Supabase dev (local `supabase start` hoặc project dev riêng), không dùng project production. Ngoại lệ duy nhất: unit test hàm thuần trong `engine/` (snapshot `svg(el)`/`pdf(el)` — Nguyên tắc 6) vì layer này không chứa dữ liệu. Cần mock thêm tầng nào khác → hỏi chủ sản phẩm trước.
+2. **Cấm bịa thông tin, cấm phán đoán bừa.** Mọi nhận định về schema, API, prompt, hành vi hệ thống phải dựa vào `docs/` hoặc code đã commit — trích dẫn được nguồn. Chưa có trong spec = ghi rõ "spec chưa định nghĩa" rồi hỏi chủ sản phẩm. Chỉ được báo "test/build pass" khi đã chạy lệnh thật và dẫn output thật; không tự tuyên bố thành công khi chưa chạy.
+3. **Đồng bộ GitHub đầu mỗi buổi làm việc.** Trước khi code việc mới: `git fetch origin` → so local với `origin/main` (`git status`, `git log HEAD..origin/main`) → nếu tụt sau thì `git pull --rebase` → đọc diff mới kéo về để xác định công việc định làm **có đụng chạm code đã có trên repo không** (đặc biệt `engine/`, prompts mirror, `docs/db/schema.sql`). Có overlap/xung đột làm đổi scope → báo chủ sản phẩm trước khi tiếp tục.
+
 ## Nguyên tắc kiến trúc (không được phá)
 
 1. **AI KHÔNG vẽ — AI KHAI BÁO.** Thứ AI dễ sai (tọa độ chính xác, fontSize, chia trang) phải chạy trong `engine/` — thuần deterministic, không phụ thuộc AI, không network. Không đưa logic vẽ vào `lib/ai/`, không đưa gọi AI vào `engine/`.
