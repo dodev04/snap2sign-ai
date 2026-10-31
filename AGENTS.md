@@ -1,0 +1,56 @@
+# AGENTS.md — AI Signboard Studio (D:\image)
+
+Hướng dẫn cho các ZCode agent làm việc trong workspace này. **Nguồn chân lý là `docs/`** — đọc trước khi sửa vùng nhạy cảm.
+
+## Dự án là gì
+
+Web app (PC + Mobile Web) chuyển **ảnh chụp biển bảng giá siêu thị/tạp hóa** thành **mẫu thiết kế vector chuẩn A4 chuẩn in**, rồi sửa bằng **lệnh tự nhiên** (AI-Native / Conversational Editor — không kéo thả kiểu Canva). Xuất PDF nhiều trang, tạo hàng loạt từ 1 câu lệnh dài, lưu kho mẫu tái sử dụng.
+
+**Ràng buộc kinh doanh cứng:** vận hành **0đ** — Vercel Hobby + Supabase Free + Gemini Free Tier. Mọi thay đổi làm tăng lượt gọi AI hoặc thêm dịch vụ trả phí đều phải hỏi chủ sản phẩm trước.
+
+**Trạng thái:** mới có blueprint (docs/), **chưa có code**. Mốc kế tiếp là scaffold Milestone 1 theo `docs/ROADMAP.md`.
+
+## Thư mục
+
+```
+docs/               BLUEPRINT — nguồn chân lý, đọc trước khi code
+  PRD.md              personas, user flow, success metrics, out-of-scope
+  ARCHITECTURE.md     luồng E2E, Document JSON v1, patch protocol, auto-fit,
+                      renderer kép, cấu trúc src/ dự kiến (§1)
+  DATABASE.md         quy ước truy vấn + giải thích schema
+  db/schema.sql       DDL Supabase Postgres (bảng, index, RLS, functions)
+  SYSTEM_PROMPTS.md   NGUYÊN VĂN 5 prompt + responseSchema + Zod + retry
+  ROADMAP.md          M1-M4 × 2 tuần, định nghĩa hoàn thành, rủi ro
+.env.example        7 biến môi trường — placeholder rỗng, không key thật
+```
+
+Cấu trúc `src/` sẽ theo `docs/ARCHITECTURE.md §1` (Next.js App Router; `engine/` = deterministic thuần, `lib/ai/` = prompts + Gemini client, `stores/` = Zustand).
+
+## Lệnh build/test
+
+Chưa có `package.json`. Sau khi scaffold M1: chuẩn Next.js + TypeScript (`npm run dev` / `build` / `lint`; test engine bằng vitest). **Cập nhật mục này ngay khi scaffold xong.**
+
+## Nguyên tắc kiến trúc (không được phá)
+
+1. **AI KHÔNG vẽ — AI KHAI BÁO.** Thứ AI dễ sai (tọa độ chính xác, fontSize, chia trang) phải chạy trong `engine/` — thuần deterministic, không phụ thuộc AI, không network. Không đưa logic vẽ vào `lib/ai/`, không đưa gọi AI vào `engine/`.
+2. **Patch theo `id` element, không bao giờ theo array index** (AI đếm nhầm index). `op:'add'` luôn dùng id **client cấp trước** trong payload — AI không tự chế id.
+3. **Element types cố định:** `text | rect | line | image | path | repeat`. Field预留 `dataBinding`, `embedding` và `schemaVersion`: không đổi tên, không xóa, giữ null ở MVP. Đổi schema = tăng `schemaVersion` + viết hàm migrate.
+4. **STATIC_PREFIX prompt tĩnh tuyệt đối** (đầu `systemInstruction`, giống hệt 100% lượt gọi — lợi ích implicit context caching). Sửa prompt: chỉnh `SYSTEM_PROMPTS.md` trước, rồi mirror sang code; không chỉnh code prompt trực tiếp.
+5. **Bảo đảm 2 lớp:** `responseSchema` (cú pháp) → Zod (giá trị) → retry **tối đa 1 lần**. Lỗi ngữ cảnh doc (id không tồn tại): bỏ op sai, áp phần hợp lệ — không retry.
+6. **Renderer kép đồng bộ:** mỗi element type có cặp hàm `svg(el)`/`pdf(el)` cạnh nhau; đổi 1 bên phải đổi bên kia + snapshot test so sánh. Hệ tọa độ mm A4 dùng chung (PDF: mm→pt ×2.83465).
+7. **Kỷ luật quota:** batch N trang = 1 lượt AI; Quick Tap sửa chữ/đổi màu = 0 lượt AI; photo-hash cache tra trước mọi lượt EXTRACT. Không thêm lượt gọi AI mới nếu chưa cân nhắc cache/rate-limit (30 lệnh/người/ngày).
+
+## Bảo mật (ràng buộc tuyệt đối khi code)
+
+- **SQL chỉ qua parameter binding** (Supabase client hoặc placeholder `$1,$2`). Cấm nối chuỗi / template string / format SQL với input ngoài.
+- **Credentials chỉ từ biến môi trường** (`GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET`, `IP_HASH_SECRET`...). Không ghi key thật vào source, ví dụ, test, log, hay commit.
+- `SUPABASE_SERVICE_ROLE_KEY` chỉ dùng trong API route (server); `extraction_cache`/`ai_usage` không expose cho client (deny-all RLS).
+- BYOK key của user: localStorage client, gửi header từng request, server dùng xong **bỏ — không lưu DB, không log**.
+- Route `/api/ai/*` chạy Edge Runtime — chỉ `fetch` thuần, không dependency Node-only.
+
+## Quy ước khác
+
+- Ngôn ngữ sản phẩm: **tiếng Việt** (giữ nguyên dấu thanh; giá `15.000đ`/`15K`; % nguyên số). Font chỉ dùng OFL: Be Vietnam Pro / Montserrat / Anton (token `body`/`display`/`price`).
+- Palette in an toàn + design tokens: xem STATIC_PREFIX trong `docs/SYSTEM_PROMPTS.md`.
+- Thảo luận với chủ sản phẩm: mỗi lượt 3-4 câu hỏi kèm 2-3 phương án có ưu/nhược; user trả lời kiểu "1A – 2C".
+- Trước khi sửa: prompts → đọc `docs/SYSTEM_PROMPTS.md`; DB → `docs/db/schema.sql` + `docs/DATABASE.md`; engine/renderer → `docs/ARCHITECTURE.md`; roadmap/scope → `docs/ROADMAP.md`.
