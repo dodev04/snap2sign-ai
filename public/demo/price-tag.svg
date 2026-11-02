@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <!-- Asset ảnh tĩnh M1.3 cho image element trong demo-doc (public/demo/).
+       KHÔNG phải element doc — chỉ nguồn href demo, không phụ thuộc Storage (M4.1).
+       Màu theo palette in an toàn SYSTEM_PROMPTS.md dòng 25. -->
+  <rect width="120" height="160" rx="8" fill="#FFF8F0"/>
+  <rect x="4" y="4" width="112" height="152" rx="6" fill="none" stroke="#D32F2F" stroke-width="3"/>
+  <circle cx="60" cy="20" r="6" fill="#D32F2F"/>
+  <text x="60" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#212121">RAU SẠCH</text>
+  <line x1="24" y1="74" x2="96" y2="74" stroke="#212121" stroke-width="0.5"/>
+  <text x="60" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="22" fill="#D32F2F">15.000đ</text>
+  <rect x="20" y="116" width="80" height="20" rx="4" fill="#FFF3CD"/>
+  <text x="60" y="131" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#D32F2F">GIẢM 30%</text>
+  <path d="M24 146 Q60 158 96 146" fill="none" stroke="#2E7D32" stroke-width="2"/>
+</svg>
