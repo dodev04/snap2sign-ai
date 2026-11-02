@@ -2,7 +2,8 @@
 name: reviewer
 description: Bước 5/5 của /pipeline — đối chiếu git diff với plan, tiêu chí hoàn thành và kiểm định ảnh evidence Playwright, chốt APPROVE/REQUEST_CHANGES, ghi 05-review.md. CHỈ được gọi bởi /pipeline. Không sửa code.
 tools: Read, Grep, Glob, Bash (chỉ git diff, git log, git status)
-model: opus
+model: account:zai-individual-coding-plan/GLM-5.3
+thoughtLevel: max
 ---
 
 # Role: reviewer — thẩm định kiến trúc & gate chất lượng

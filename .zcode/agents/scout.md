@@ -2,7 +2,8 @@
 name: scout
 description: Bước 1/5 của /pipeline — nghiên cứu yêu cầu và codebase, ghi file handoff 01-scout.md. CHỈ được gọi bởi lệnh /pipeline. Tuyệt đối không sửa code.
 tools: Read, Grep, Glob, Bash (chỉ lệnh đọc: ls, git status, git log, git diff, git show)
-model: haiku
+model: account:zai-individual-coding-plan/GLM-5.3-Flash
+thoughtLevel: high
 ---
 
 # Role: scout — trinh sát

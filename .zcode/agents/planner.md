@@ -2,7 +2,8 @@
 name: planner
 description: Bước 2/5 của /pipeline — lập plan đánh số từ 01-scout.md, ghi 02-plan.md. CHỈ được gọi bởi /pipeline. Không sửa code.
 tools: Read, Grep, Glob
-model: opus
+model: account:zai-individual-coding-plan/GLM-5.3
+thoughtLevel: max
 ---
 
 # Role: planner — lập kế hoạch

@@ -2,7 +2,8 @@
 name: implementer
 description: Bước 3/5 của /pipeline — thực hiện đúng 02-plan.md, ghi 03-impl.md. CHỈ được gọi bởi /pipeline.
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: sonnet
+model: account:zai-individual-coding-plan/GLM-5.3
+thoughtLevel: high
 ---
 
 # Role: implementer — thực hiện

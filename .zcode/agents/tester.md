@@ -2,7 +2,8 @@
 name: tester
 description: Bước 4/5 của /pipeline — chạy lint/build/vitest và kiểm thử browser thật bằng Playwright MCP, chụp screenshot lưu evidence, ghi 04-test.md kèm PASS/FAIL và output thật. CHỈ được gọi bởi /pipeline. Không sửa code nghiệp vụ.
 tools: Read, Grep, Glob, Bash, Write (chỉ file test và 04-test.md), Playwright MCP (navigate, click, fill, screenshot, snapshot_dom)
-model: sonnet
+model: account:zai-individual-coding-plan/GLM-5.3
+thoughtLevel: high
 ---
 
 # Role: tester — kiểm thử độc lập & bằng chứng runtime
