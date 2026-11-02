@@ -4,9 +4,12 @@
  * SelectableA4Preview — A4Preview + hit-testing M1.4 + gesture move/resize M1.5
  * (docs/ARCHITECTURE.md §7).
  *
- * - CONTROLLED (02-plan Bước 5): state `doc` + `selectedId` lift lên EditorPage —
- *   component nhận `doc / selectedId / onSelect / onApplyPatches`. Mọi biến đổi doc
- *   đi qua patch (engine patch-apply) — component KHÔNG tự setDoc. editorStore là M1.6.
+ * - CONTROLLED (M1.5, giữ nguyên interface): state `doc` + `selectedId` sống trong
+ *   editorStore (Zustand — M1.6) từ M1.6; EditorPage vẫn là glue truyền props
+ *   `doc / selectedId / onSelect / onApplyPatches`. Mọi biến đổi doc đi qua patch
+ *   (engine patch-apply) — component KHÔNG tự setDoc. M1.6 THÊM 2 props optional
+ *   `onDragBegin`/`onDragEnd` (transaction undo 1C): 1 cử chỉ kéo — bao nhiêu
+ *   pointermove — = đúng 1 mục undo; rung < DRAG_THRESHOLD_MM không sinh mục undo.
  * - pointerdown (mouse + touch unified) → getBoundingClientRect → px→mm →
  *   `selectableElementAtPoint` (engine selection — click nền E1 = deselect, Quyết định 1B).
  * - Move/resize TỰ VIẾT bằng pointer events + snap 0.5mm (skill signboard-frontend —
@@ -59,6 +62,8 @@ export default function SelectableA4Preview({
   selectedId,
   onSelect,
   onApplyPatches,
+  onDragBegin,
+  onDragEnd,
   className,
   children,
 }: {
@@ -66,6 +71,10 @@ export default function SelectableA4Preview({
   selectedId: string | null
   onSelect: (id: string | null) => void
   onApplyPatches: (patches: Patch[]) => void
+  /** M1.6 transaction undo: gọi 1 lần đầu cử chỉ kéo — store beginGesture chốt doc xuất phát. */
+  onDragBegin?: () => void
+  /** M1.6 transaction undo: gọi khi kết thúc cử chỉ kéo — store endGesture push đúng 1 mục undo. */
+  onDragEnd?: () => void
   className?: string
   children?: ReactNode
 }) {
@@ -106,6 +115,9 @@ export default function SelectableA4Preview({
     mode: 'move' | 'resize',
     handle: ResizeHandle | null,
   ) => {
+    // Carry-over review M1.5 (05-review:67): chặn pointerdown trên drag-surface/handle
+    // bubble lên wrapper onPointerDown → hit-test tại điểm bám đổi selection giữa chừng.
+    e.stopPropagation()
     const selected = selectedId === null ? undefined : doc.elements.find((el) => el.id === selectedId)
     const mm = clientToMm(e.clientX, e.clientY)
     if (!selected || mm === null) return
@@ -119,6 +131,7 @@ export default function SelectableA4Preview({
       rotation: selected.rotation ?? 0,
       moved: false,
     }
+    onDragBegin?.() // transaction undo 1C: chốt doc xuất phát cho cả cử chỉ
   }
 
   /** Chỉ phát patch cho field thực đổi so với hình lúc bắt đầu kéo (tránh op 0-đổi). */
@@ -160,11 +173,16 @@ export default function SelectableA4Preview({
       dx = nowLocal.x - startLocal.x
       dy = nowLocal.y - startLocal.y
     }
+    // Carry-over review M1.5 (05-review:68): resize cũng cần ngưỡng như move (:146-147) —
+    // chạm handle + rung 0.2mm không phát patch. dx/dy là local-frame khi xoay (cùng
+    // delta mà chính gesture resize đo) → ngưỡng 1.5mm dùng chung DRAG_THRESHOLD_MM.
+    if (!drag.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD_MM) return
     drag.moved = true
     onApplyPatches(geomPatches(selected.id, drag.geom, applyResize(drag.geom, drag.handle, dx, dy)))
   }
 
   const endDrag = (e: ReactPointerEvent<SVGRectElement>) => {
+    onDragEnd?.() // luôn gọi (không điều kiện) — endGesture idempotent, no-op khi không có gesture
     const drag = dragRef.current
     dragRef.current = null
     if (drag !== null && e.currentTarget.hasPointerCapture(e.pointerId)) {

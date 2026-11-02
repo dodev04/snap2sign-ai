@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "mimosa-hook-status/v1",
+  "recordedAt": "2026-11-02T09:22:47.401Z",
+  "sessionId": "sess_be5852d1-3643-4dea-a346-1e51ddd70892",
+  "event": "PostToolUse",
+  "toolName": "Edit",
+  "file": "C:/Users/Admin/.zcode/cli/memories/projects/image-1d9b4a0aab0e9ab6/memory/MEMORY.md",
+  "outcome": "clear",
+  "coverage": "complete",
+  "findingCount": 0,
+  "durationMs": 3,
+  "hostState": "hook_complete",
+  "reportHint": ".mimosa/reports/"
+}
