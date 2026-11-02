@@ -4,7 +4,7 @@
 
 ## Milestone 1: Nền Editor, Chưa có AI (Tuần 1-2)
 - [x] **M1.1 — Scaffold**: Next.js App Router + TS + Tailwind + Zustand + Vitest; cấu trúc thư mục theo ARCHITECTURE.md §1 *(scaffold-m1 — tester PASS + reviewer APPROVE 2026-11-02)*
-- [ ] **M1.2 — Types + Zod**: `doc.types.ts` / `doc.zod.ts` — A4Doc + Patch (đúng SYSTEM_PROMPTS.md §6)
+- [x] **M1.2 — Types + Zod**: `doc.types.ts` / `doc.zod.ts` — A4Doc + Patch (đúng SYSTEM_PROMPTS.md §6) *(20261102-m12-types-zod — tester PASS 43/43 + smoke 2 viewport, reviewer APPROVE 2026-11-02; 2 câu hỏi mở chờ chủ sản phẩm: phê chuẩn A4DocSchema/ElSchema tổng hợp + cách đọc superRefine add; chưa commit)*
 - [ ] **M1.3 — SVG renderer**: `svg-render.tsx` — 6 loại element; hệ tọa độ mm; scale responsive
 - [ ] **M1.4 — Hit-testing**: pointer → mm; chọn element theo z-order; hỗ trợ rotation
 - [ ] **M1.5 — Quick Tap**: menu: Sửa chữ (inline) / Đổi màu / Xóa / Tầng / kéo-move + resize snap 0.5mm

@@ -6,16 +6,16 @@
 - **Dự án**: AI Signboard Studio (D:\image)
 - **Mục tiêu**: Web app AI-native chuyển ảnh chụp biển giá thành mẫu in A4 chuẩn vector, sửa bằng conversational editor.
 - **Milestone hiện tại**: Milestone 1 (M1) — Core Engine & Data Model (Tuần 1–2).
-- **Trạng thái**: M1_IN_PROGRESS (M1.1 Scaffold xong — reviewer APPROVE; gói kế tiếp: M1.2 Types + Zod).
+- **Trạng thái**: M1_IN_PROGRESS (M1.1 + M1.2 xong — reviewer APPROVE; gói kế tiếp: M1.3 SVG renderer).
 - **Lần cập nhật cuối**: 2026-11-02
 
 ---
 
 ## 2. Nhiệm vụ hiện tại (Current Task)
-- **Task ID**: scaffold-m1 (HOÀN THÀNH 2026-11-02 qua `/scaffold M1`)
-- **Mô tả**: Khởi tạo khung Next.js 16 App Router + TS strict + Tailwind v3 + Zustand + Supabase client + Zod + Vitest theo `docs/ARCHITECTURE.md §1`. Handoff `.handoff/scaffold-m1/` (02→05): tester PASS (CLI exit 0 + ảnh Playwright 2 viewport), reviewer APPROVE.
+- **Task ID**: 20261102-m12-types-zod (HOÀN THÀNH 2026-11-02 qua `/pipeline`)
+- **Mô tả**: M1.2 — tạo 4 file trong `src/engine/`: `doc.types.ts` (TS types nguyên văn ARCHITECTURE §3-§4) + `doc.zod.ts` (mirror nguyên văn SYSTEM_PROMPTS §6 dòng 314-379 + superRefine add + ElSchema/A4DocSchema) + 2 file test (13 + 27 assert). Handoff `.handoff/20261102-m12-types-zod/` (01→05): tester PASS (vitest 43/43, lint 0 lỗi, build strict pass, smoke dev 2 viewport có evidence), reviewer APPROVE (0 blocker). **CHƯA COMMIT.**
 - **Vai đang chạy**: N/A (pipeline đóng)
-- **Trạng thái**: DONE — gói kế tiếp đề xuất: M1.2 Types + Zod (`doc.types.ts`/`doc.zod.ts` theo SYSTEM_PROMPTS.md §6)
+- **Trạng thái**: DONE — gói kế tiếp đề xuất: M1.3 SVG renderer (`svg-render.tsx` 6 loại element theo ROADMAP). 2 câu hỏi mở chờ chủ sản phẩm phê chuẩn (xem 05-review.md).
 
 ---
 
