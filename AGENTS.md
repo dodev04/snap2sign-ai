@@ -8,7 +8,7 @@ Web app (PC + Mobile Web) chuyển **ảnh chụp biển bảng giá siêu thị
 
 **Ràng buộc kinh doanh cứng:** vận hành **0đ** — Vercel Hobby + Supabase Free + Gemini Free Tier. Mọi thay đổi làm tăng lượt gọi AI hoặc thêm dịch vụ trả phí đều phải hỏi chủ sản phẩm trước.
 
-**Trạng thái:** mới có blueprint (docs/), **chưa có code**. Mốc kế tiếp là scaffold Milestone 1 theo `docs/ROADMAP.md`.
+**Trạng thái:** đã scaffold M1 (khung Next.js 16 + TypeScript + Tailwind v3 + Vitest; 2026-11-02, reviewer APPROVE) — chưa có tính năng. Gói kế tiếp: M1.2 Types + Zod theo `docs/ROADMAP.md`.
 
 ## Thư mục
 
@@ -22,13 +22,19 @@ docs/               BLUEPRINT — nguồn chân lý, đọc trước khi code
   SYSTEM_PROMPTS.md   NGUYÊN VĂN 5 prompt + responseSchema + Zod + retry
   ROADMAP.md          M1-M4 × 2 tuần, định nghĩa hoàn thành, rủi ro
 .env.example        7 biến môi trường — placeholder rỗng, không key thật
+src/                CODE — đã scaffold M1: app/ (App Router), engine/ (thuần deterministic),
+                    lib/ai/, lib/db/, stores/ (Zustand), components/editor/
 ```
 
-Cấu trúc `src/` sẽ theo `docs/ARCHITECTURE.md §1` (Next.js App Router; `engine/` = deterministic thuần, `lib/ai/` = prompts + Gemini client, `stores/` = Zustand).
+Cấu trúc `src/` theo `docs/ARCHITECTURE.md §1` (Next.js App Router; `engine/` = deterministic thuần, `lib/ai/` = prompts + Gemini client, `stores/` = Zustand). Hiện mới có khung: doc types/Zod (M1.2), renderer (M1.3), store thật (M1.6), AI layer (M2) chưa viết.
 
 ## Lệnh build/test
 
-Chưa có `package.json`. Sau khi scaffold M1: chuẩn Next.js + TypeScript (`npm run dev` / `build` / `lint`; test engine bằng vitest). **Cập nhật mục này ngay khi scaffold xong.**
+Next.js 16 (App Router, Turbopack) + TypeScript strict + Tailwind v3 + ESLint 10 (flat config) + Vitest:
+- `npm run dev` — dev server `http://localhost:3000` (redirect `/` → `/editor`)
+- `npm run build` — production build + typecheck
+- `npm run lint` — `eslint .`
+- `npm run test` (hoặc `npx vitest run`) — unit test hàm thuần trong `src/engine/`
 
 ## Kiểm chứng & đồng bộ (bắt buộc mọi phiên làm việc)
 

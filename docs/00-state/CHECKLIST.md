@@ -3,7 +3,7 @@
 > Ghi nhận tiến độ đo lường được theo `docs/ROADMAP.md`. Chỉ tick `[x]` khi đã qua kiểm thử độc lập và reviewer duyệt.
 
 ## Milestone 1: Nền Editor, Chưa có AI (Tuần 1-2)
-- [ ] **M1.1 — Scaffold**: Next.js App Router + TS + Tailwind + Zustand + Vitest; cấu trúc thư mục theo ARCHITECTURE.md §1
+- [x] **M1.1 — Scaffold**: Next.js App Router + TS + Tailwind + Zustand + Vitest; cấu trúc thư mục theo ARCHITECTURE.md §1 *(scaffold-m1 — tester PASS + reviewer APPROVE 2026-11-02)*
 - [ ] **M1.2 — Types + Zod**: `doc.types.ts` / `doc.zod.ts` — A4Doc + Patch (đúng SYSTEM_PROMPTS.md §6)
 - [ ] **M1.3 — SVG renderer**: `svg-render.tsx` — 6 loại element; hệ tọa độ mm; scale responsive
 - [ ] **M1.4 — Hit-testing**: pointer → mm; chọn element theo z-order; hỗ trợ rotation

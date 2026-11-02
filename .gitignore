@@ -10,3 +10,10 @@ node_modules/
 .next/
 .env
 .env.local
+
+# File sinh tự động bởi Next.js + bản build
+next-env.d.ts
+*.tsbuildinfo
+out/
+.vercel
+npm-debug.log*
